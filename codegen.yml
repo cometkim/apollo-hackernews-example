@@ -1,12 +1,40 @@
-schema: ./src/schema.graphql
-# documents: ./src/**/*.graphql
+schema: src/schema.graphql
+
+documents:
+  - src/**/*.{ts,tsx}
+  - '!src/**/*.test.{ts,tsx}'
+  - '!src/**/*.generated.{ts,tsx}'
+  - '!src/generated'
 
 generates:
-  ./src/generated/apollo-client.tsx:
+  ./src/generated/types.ts:
     plugins:
       - typescript
+      - typescript-resolvers
+
+  ./src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: generated/types.ts
+    plugins:
       - typescript-operations
       - typescript-react-apollo
-      - typescript-resolvers
-      - fragment-matcher
     config:
+      gqlImport: graphql.macro#gql
+      # See https://github.com/dotansimha/graphql-code-generator/pull/2442
+      # documentMode: external
+      # importDocumentNodeExternallyFrom: near-operation-file
+      reactApolloVersion: 3
+      withComponent: false
+      withHOC: false
+      withHooks: true
+
+  ./src/generated/introspection-result.ts:
+    plugins:
+      - fragment-matcher
+
+pluckConfig:
+  modules:
+    - name: graphql.macro
+      identifier: gql
