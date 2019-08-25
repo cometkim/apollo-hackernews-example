@@ -7,7 +7,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "lint": "eslint --ignore-path .gitignore . --ext ts --ext tsx",
+    "lint:fix": "yarn lint --fix"
   },
   "eslintConfig": {
     "extends": "react-app"

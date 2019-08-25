@@ -5,7 +5,7 @@ import './App.css';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { RestLink } from 'apollo-link-rest';
 // import { ApolloProvider, useQuery, useLazyQuery } from '@apollo/react-hooks';
-import { ApolloProvider, Query } from 'react-apollo'
+import { ApolloProvider, Query } from 'react-apollo';
 import { gql, loader } from 'graphql.macro';
 import resolvers from './resolvers';
 
@@ -41,11 +41,11 @@ const TopStories = () => {
         console.log('data :', data);
         return (
           <div/>
-        )
+        );
       }}
     </Query>
-  )
-}
+  );
+};
 
 const App: React.FC = () => {
   return (
@@ -53,6 +53,6 @@ const App: React.FC = () => {
       <TopStories />
     </ApolloProvider>
   );
-}
+};
 
 export default App;

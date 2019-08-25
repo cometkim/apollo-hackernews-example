@@ -1,5 +1,17 @@
 {
   "files.associations": {
-    "*.ts": "typescriptreact"
-  }
+    "*.ts": "typescriptreact",
+    "*.tsx": "typescriptreact"
+  },
+  "eslint.enable": true,
+  "eslint.validate": [
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ]
 }
