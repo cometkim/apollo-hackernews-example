@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-import ApolloClient, { InMemoryCache } from 'apollo-boost';
-import { RestLink } from 'apollo-link-rest';
-// import { ApolloProvider, useQuery, useLazyQuery } from '@apollo/react-hooks';
-import { ApolloProvider, Query } from 'react-apollo';
+import ApolloClient, { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { gql, loader } from 'graphql.macro';
-import resolvers from './resolvers';
 
-const cache = new InMemoryCache();
+import resolvers from './resolvers';
+import introspectionQueryResultData from 'generated/introspection-result';
+
+import { useTopStoriesQuery } from './App.generated';
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData,
+});
+
+const cache = new InMemoryCache({
+  fragmentMatcher,
+});
 
 // @ts-ignore
 const client = new ApolloClient({
@@ -20,37 +27,32 @@ const client = new ApolloClient({
   },
 });
 
-const TopStories = () => {
-  return (
-    <Query
-      query={gql`
-        query TopStories {
-          topStories @client {
-            stories {
-              createdBy {
-                id
-                about
-                karma
-              }
-            }
-          }
+export const TopStories = gql`
+  query TopStories {
+    topStories @client {
+      stories {
+        createdBy {
+          id
+          about
+          karma
         }
-      `}
-    >
-      {({data}) => {
-        console.log('data :', data);
-        return (
-          <div/>
-        );
-      }}
-    </Query>
+      }
+    }
+  }
+`;
+
+const TopStoriesComponent = () => {
+  const { data } = useTopStoriesQuery();
+  console.log('data :', data);
+  return (
+    <div/>
   );
 };
 
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <TopStories />
+      <TopStoriesComponent />
     </ApolloProvider>
   );
 };
