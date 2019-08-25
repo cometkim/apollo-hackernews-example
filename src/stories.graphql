@@ -1,0 +1,20 @@
+fragment UserSummary on User {
+  id
+  about
+  karma
+}
+
+query TopStories {
+  topStories {
+    stories {
+      id
+      url
+      title
+      score
+      createdAt
+      createdBy {
+        ...UserSummary
+      }
+    }
+  }
+}

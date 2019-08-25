@@ -1,0 +1,12 @@
+schema: ./src/schema.graphql
+# documents: ./src/**/*.graphql
+
+generates:
+  ./src/generated/apollo-client.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+      - typescript-resolvers
+      - fragment-matcher
+    config:
