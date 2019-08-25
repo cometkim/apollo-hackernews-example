@@ -1,5 +1,5 @@
 {
-  "name": "apollo-client-hackernews-example",
+  "name": "apollo-hackernews-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,5 +27,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/webpack-env": "^1.14.0",
+    "typescript": "^3.5.3"
   }
 }
