@@ -1,0 +1,105 @@
+scalar Date
+scalar URL
+
+schema {
+  query: Query
+}
+
+# 커서 기반 페이지네이션의 일부분을 구현합니다.
+# 더 불러오기에 필요한 부분만을 선언하고
+# 이 외 Edge, Connection에 대한 선언은 생략합니다.
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type ItemsOutput {
+  items: [Item!]!
+  pageInfo: PageInfo!
+}
+
+type StoriesOutput {
+  stories: [Story!]!
+  pageInfo: PageInfo!
+}
+
+type JobsOutput {
+  jobs: [Job!]!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  user(id: ID!): User!
+  items(first: Int! = 20, after: ID): ItemsOutput!
+  topStories(first: Int! = 20, after: ID): StoriesOutput!
+  newStories(first: Int! = 20, after: ID): StoriesOutput!
+  bestStories(first: Int! = 20, after: ID): StoriesOutput!
+  askStories(first: Int! = 20, after: ID): StoriesOutput!
+  showStories(first: Int! = 20, after: ID): StoriesOutput!
+  jobStories(first: Int! = 20, after: ID): JobsOutput!
+}
+
+type User {
+  id: ID!
+  createdAt: Date!
+  about: String!
+  karma: Int!
+  submitted: [Item!]!
+}
+
+interface Item {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+}
+
+interface Commentable {
+  comments: [Comment!]!
+}
+
+# Story and Ask
+type Story implements Item & Commentable {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+  comments: [Comment!]!
+  url: URL!
+  title: String!
+  score: Int!
+}
+
+type Comment implements Item & Commentable {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+  comments: [Comment!]!
+  parent: Commentable!
+  contentHtml: String!
+}
+
+type Job implements Item {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+  score: Int!
+  title: String!
+  contentHtml: String!
+}
+
+type Poll implements Item & Commentable {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+  comments: [Comment!]!
+  title: String!
+  parts: [PollPart!]!
+  score: Int!
+}
+
+type PollPart implements Item {
+  id: ID!
+  createdAt: Date!
+  createdBy: User!
+  poll: Poll!
+  text: String!
+}
